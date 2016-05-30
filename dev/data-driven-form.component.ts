@@ -1,5 +1,5 @@
 import {Component, OnInit} from 'angular2/core';
-import {FormBuilder, ControlGroup, Validators} from "angular2/common";
+import {FormBuilder, ControlGroup, Validators, Control} from "angular2/common";
 
 
 @Component({
@@ -42,13 +42,20 @@ export class DataDrivenComponent implements OnInit {
     ngOnInit():any {
         this.myForm = this._formBuilder.group({
             'email': ['', Validators.required],
-            'password': ['', Validators.required],
+            'password': ['', Validators.compose([
+                Validators.required,
+                hasNumbers
+            ])],
             'confirmPassword': ['', Validators.required],
         });
     }
 }
 
-
+function hasNumbers(control: Control): {[s: string]: boolean}{
+    if (!control.value.match('\\d+')){
+        return {noNumbers: true};
+    }
+}
 
 
 
